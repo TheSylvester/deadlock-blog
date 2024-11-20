@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Deadlock Blog
+
+A modern, performant blog platform built with Next.js 14, React 18, and TailwindCSS.
+
+## Features
+
+- Modern UI with shadcn/ui components
+- Server-side rendering with Next.js 14
+- TypeScript support for enhanced type safety
+- Responsive design
+- Optimized font loading with next/font
+- ESLint configuration for code quality
+- Integration with Strapi-based content management system
+
+## Tech Stack
+
+- **Framework**: Next.js 14.2.15
+- **Language**: TypeScript 5
+- **Styling**: 
+  - TailwindCSS 3.4
+  - Class Variance Authority 0.7
+  - Tailwind Merge
+- **UI Components**: 
+  - shadcn/ui (built on Radix UI primitives)
+  - Lucide React Icons
+- **Content Management**: Strapi (via deadlock-content-server)
+- **Development Tools**:
+  - ESLint 8
+  - PostCSS 8
+  - Node.js TypeScript types
+
+## Prerequisites
+
+- Node.js (Latest LTS version recommended)
+- npm 6.0.0 or higher
 
 ## Getting Started
 
-First, run the development server:
-
+1. Clone the repository
+2. Install dependencies:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Ensure the content server is running (see deadlock-content-server README)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+4. Run the development server:
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+deadlock-blog/
+├── app/               # Next.js app directory
+├── components/        # Reusable UI components
+├── lib/              # Utility functions and shared logic
+└── styles/           # Global styles and Tailwind configuration
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Available Scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `npm run dev` - Start development server
+- `npm run build` - Build production bundle
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
 
-## Deploy on Vercel
+## System Architecture
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This blog is part of a larger system:
+- Frontend: This Next.js application (deadlock-blog)
+- Backend: Strapi CMS (deadlock-content-server)
+- Database: SQLite (managed by Strapi)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The blog fetches content from the Strapi backend running at `http://localhost:3001` by default.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License.
