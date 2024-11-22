@@ -81,25 +81,31 @@ export function FixedNewsBlog({ articles }: FixedNewsBlogProps) {
           <div className="container mx-auto px-4 py-4">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {featuredArticle ? (
-                <div className="lg:col-span-2 relative">
-                  <Image
-                    src={getImageUrl(featuredArticle?.attributes?.cover)}
-                    alt={featuredArticle?.attributes?.title || 'Featured Article'}
-                    width={800}
-                    height={450}
-                    className="w-full h-auto rounded-lg border border-[#F4EED8]/20"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent rounded-lg border border-[#F4EED8]/20" />
-                  <div className="absolute bottom-0 left-0 p-6">
+                <div className="lg:col-span-2 relative h-[400px] md:h-[500px]">
+                  {featuredArticle?.attributes?.cover ? (
+                    <Image
+                      src={getImageUrl(featuredArticle.attributes.cover)}
+                      alt={featuredArticle.attributes.title || 'Featured Article'}
+                      fill
+                      className="object-cover rounded-lg"
+                      priority
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-black/50 rounded-lg border border-[#F4EED8]/20 flex items-center justify-center">
+                      <span className="text-custom-light-gray">No image available</span>
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent rounded-lg" />
+                  <div className="absolute bottom-0 left-0 p-6 w-full">
                     {featuredArticle?.attributes?.tags?.data?.[0] && (
                       <div className="inline-block px-3 py-1 mb-4 text-xs font-semibold bg-custom-red text-white rounded">
                         {featuredArticle.attributes.tags.data[0].attributes.name}
                       </div>
                     )}
-                    <h1 className="font-cinzel text-3xl md:text-4xl font-bold text-custom-cream mb-2">
+                    <h1 className="font-cinzel text-2xl md:text-3xl lg:text-4xl font-bold text-custom-cream mb-2">
                       {featuredArticle?.attributes?.title || 'Welcome to Deadlock News'}
                     </h1>
-                    <p className="text-custom-light-gray max-w-2xl mb-4">
+                    <p className="text-custom-light-gray max-w-2xl mb-4 text-sm md:text-base line-clamp-2 md:line-clamp-3">
                       {featuredArticle?.attributes?.excerpt || 'Stay tuned for the latest updates and news about Deadlock.'}
                     </p>
                     {featuredArticle?.attributes?.slug ? (
@@ -118,8 +124,8 @@ export function FixedNewsBlog({ articles }: FixedNewsBlogProps) {
                   </div>
                 </div>
               ) : (
-                <div className="lg:col-span-2 relative">
-                  <div className="w-full h-[450px] rounded-lg border border-[#F4EED8]/20 bg-black/50 flex items-center justify-center">
+                <div className="lg:col-span-2 relative h-[400px] md:h-[500px]">
+                  <div className="w-full h-full rounded-lg border border-[#F4EED8]/20 bg-black/50 flex items-center justify-center">
                     <p className="text-custom-light-gray">No featured article available</p>
                   </div>
                 </div>
@@ -128,27 +134,33 @@ export function FixedNewsBlog({ articles }: FixedNewsBlogProps) {
               <div className="space-y-4">
                 {sideArticles.length > 0 ? (
                   sideArticles.map((article) => (
-                    <Link key={article.id} href={`/article/${article.attributes.slug}`}>
-                      <Card className="bg-black/30 border-[#F4EED8]/20 hover:border-[#00FF00]/50 transition-colors rounded-md">
+                    article?.attributes?.slug ? (
+                      <Link key={article.id} href={`/article/${article.attributes.slug}`}>
+                        <Card className="bg-black/30 border-[#F4EED8]/20 hover:border-[#00FF00]/50 transition-colors rounded-md">
+                          <CardHeader className="flex flex-row items-center space-x-4 p-4">
+                            <Image
+                              src={getImageUrl(article.attributes.cover)}
+                              alt={article.attributes.title || 'Article thumbnail'}
+                              width={60}
+                              height={60}
+                              className="rounded-full object-cover"
+                            />
+                            <div>
+                              <CardTitle className="font-playfair text-custom-cream">{article.attributes.title || 'Untitled Article'}</CardTitle>
+                            </div>
+                          </CardHeader>
+                        </Card>
+                      </Link>
+                    ) : (
+                      <Card key={article.id} className="bg-black/30 border-[#F4EED8]/20 rounded-md">
                         <CardHeader className="flex flex-row items-center space-x-4 p-4">
-                          <Image
-                            src={getImageUrl(article.attributes.cover)}
-                            alt={article.attributes.title || 'Article thumbnail'}
-                            width={60}
-                            height={60}
-                            className="rounded-full object-cover"
-                          />
+                          <div className="w-[60px] h-[60px] bg-gray-700 rounded-full"></div>
                           <div>
-                            <CardTitle className="font-playfair text-custom-cream text-lg">
-                              {article.attributes.title || 'Untitled Article'}
-                            </CardTitle>
-                            <CardDescription className="text-custom-light-gray">
-                              {article.attributes.excerpt || 'No description available'}
-                            </CardDescription>
+                            <CardTitle className="font-playfair text-custom-cream">Article Not Available</CardTitle>
                           </div>
                         </CardHeader>
                       </Card>
-                    </Link>
+                    )
                   ))
                 ) : (
                   <Card className="bg-black/30 border-[#F4EED8]/20 rounded-md">
@@ -176,31 +188,43 @@ export function FixedNewsBlog({ articles }: FixedNewsBlogProps) {
                   latestArticles.map((article) => (
                     <Card key={article.id} className="bg-black/30 border-[#F4EED8]/20 hover:border-[#00FF00]/50 transition-colors overflow-hidden">
                       <CardContent className="p-0">
-                        <Image
-                          src={getImageUrl(article.attributes.cover)}
-                          alt={article.attributes.title || 'Article thumbnail'}
-                          width={400}
-                          height={200}
-                          className="w-full h-48 object-cover"
-                        />
+                        {article?.attributes?.cover ? (
+                          <Image
+                            src={getImageUrl(article.attributes.cover)}
+                            alt={article.attributes.title || 'Article thumbnail'}
+                            width={400}
+                            height={200}
+                            className="w-full h-48 object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-48 bg-gray-700 flex items-center justify-center">
+                            <span className="text-custom-light-gray">No image available</span>
+                          </div>
+                        )}
                         <div className="p-4">
                           <CardTitle className="font-playfair text-custom-cream mb-2">
-                            {article.attributes.title || 'Untitled Article'}
+                            {article?.attributes?.title || 'Untitled Article'}
                           </CardTitle>
                           <CardDescription className="text-custom-light-gray mb-4">
-                            {article.attributes.excerpt || 'No description available'}
+                            {article?.attributes?.excerpt || 'No description available'}
                           </CardDescription>
                           <div className="flex justify-between items-center">
                             <span className="text-sm text-custom-light-gray">
-                              {article.attributes.published 
+                              {article?.attributes?.published 
                                 ? new Date(article.attributes.published).toLocaleDateString()
                                 : 'Date not available'}
                             </span>
-                            <Link href={`/article/${article.attributes.slug}`}>
-                              <Button variant="ghost" size="sm" className="text-custom-neon-green hover:text-custom-gold">
-                                Read More
+                            {article?.attributes?.slug ? (
+                              <Link href={`/article/${article.attributes.slug}`}>
+                                <Button variant="ghost" size="sm" className="text-custom-neon-green hover:text-custom-gold">
+                                  Read More
+                                </Button>
+                              </Link>
+                            ) : (
+                              <Button variant="ghost" size="sm" className="text-custom-light-gray" disabled>
+                                Not Available
                               </Button>
-                            </Link>
+                            )}
                           </div>
                         </div>
                       </CardContent>
